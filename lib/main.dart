@@ -1,6 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'sign_up_screen.dart';
+import 'home_screen.dart';
 
-void main() {
+void main() async{
+  //Initialize firebase first before app starts
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 
@@ -48,18 +56,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -69,47 +67,82 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(
+    return Scaffold(    //default UI
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,  //alignment
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            Container(
+              child: Image(
+                  height: 200,
+                  width: 200,
+                  image: NetworkImage('https://i.pinimg.com/originals/53/cb/23/53cb231f4c04ae30a04a6e292eb2a48c.jpg')
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+
+            Container(  //maximum space you can use
+              margin: EdgeInsets.symmetric(horizontal: 50),
+              child:  TextFormField(
+                controller: usernameController,
+                obscureText: false,
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                )
+            )),
+
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 50),
+              child:  TextFormField(
+                  controller: passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                  )
+              ),
             ),
+
+            Container(
+              height: 40,
+              width: MediaQuery.of(context).size.width /3,
+              margin: EdgeInsets.only(top: 5),
+              child:  ElevatedButton(
+                  onPressed: (){
+                    FirebaseAuth.instance.signInWithEmailAndPassword(
+                        email: usernameController.text, password: passwordController.text)
+                        .then((value) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) => HomeScreen())
+                          ).catchError((error) {
+                            print("Failed to login");
+                            print(error.toString());
+                          });
+                    });
+                  },
+                  child: Text("Login")
+              ),
+            ),
+
+            Container(
+              height: 40,
+              width: MediaQuery.of(context).size.width /3,
+              margin: EdgeInsets.only(top: 5),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => SignUpScreen())
+                    );
+                  },
+                  child: Text("Signup")
+              ),
+            ),
+
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
