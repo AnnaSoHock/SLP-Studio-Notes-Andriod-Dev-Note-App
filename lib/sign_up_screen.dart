@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_projects/home_screen.dart';
 import 'main.dart';
@@ -80,8 +81,24 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
                         FirebaseAuth.instance.createUserWithEmailAndPassword(
                             email: emailController.text,
                             password: passwordController.text)
-                            .then((value) {
-                              print("Created new account");
+                            .then((authResult) {
+                              print("Created new account UID" + authResult.user!.uid.toString());
+
+
+                              var userProfile = {
+                                'uid' : authResult.user!.uid,
+                                'email' : emailController.text,
+                                'username' : usernameController.text,
+                              };
+
+                              FirebaseDatabase.instance.ref().child("users/" + authResult.user!.uid)
+                              .set(userProfile)
+                              .then((value) {
+                                print("Successfully created the profile info");
+                              }).catchError((onError){
+                                print("Failed to create the profile info : " + onError.toString());
+                              });
+                              
                           //Push info to next screen to allow user to sign up
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => HomeScreen())
@@ -95,7 +112,6 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
                       child: Text("Signup")
                   ),
                 ),
-
 
               ],
             ),
