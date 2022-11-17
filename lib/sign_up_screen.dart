@@ -18,27 +18,25 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
 
   @override
   Widget build(BuildContext context) {  //entire UI
-    return Scaffold(    
-      extendBodyBehindAppBar: true,
+    return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blue,
+        titleTextStyle: TextStyle(color: Colors.white, fontSize: 20,
+          fontWeight: FontWeight.w500,),
+        backgroundColor: Colors.brown.shade100,
         elevation: 0,
-        title: const Text("Sign Up",
-          style: TextStyle(color: Colors.white),
-        ),
+        title: const Text("Sign Up"),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                const SizedBox(
-                  height: 20,
-                ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
                 Container(  //maximum space you can use
                     margin: EdgeInsets.symmetric(horizontal: 50),
                     child:  TextFormField(
@@ -98,7 +96,7 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
                               }).catchError((onError){
                                 print("Failed to create the profile info : " + onError.toString());
                               });
-                              
+
                           //Push info to next screen to allow user to sign up
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => HomeScreen())

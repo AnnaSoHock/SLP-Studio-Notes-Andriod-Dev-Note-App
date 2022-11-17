@@ -20,21 +20,28 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.white54,
+        appBarTheme: AppBarTheme(color: Colors.brown.shade100, titleTextStyle: TextStyle(color: Colors.white, fontSize: 20,
+        fontWeight: FontWeight.w500,)),
+        textSelectionTheme: TextSelectionThemeData(
+          selectionColor: Colors.brown.shade100,
+          cursorColor: Colors.brown.shade100,
+        ),
+        brightness: Brightness.light,
+        highlightColor: Colors.white,
+        elevatedButtonTheme:
+        ElevatedButtonThemeData(style:ButtonStyle(
+          shape: MaterialStateProperty.all<OutlinedBorder>(RoundedRectangleBorder(side: BorderSide(width: 1.0, color: Colors.grey),
+            borderRadius: BorderRadius.circular(100.0))),
+          backgroundColor: MaterialStateProperty.all<Color>(Colors.brown.shade100),
+          foregroundColor: MaterialStateProperty.all<Color>(Colors.grey.shade700) )
+        ),
+
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Studio Notes'),
     );
   }
 }
@@ -69,83 +76,84 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return Scaffold(    //default UI
+    return Scaffold(
+      backgroundColor: Colors.grey.shade50,//default UI
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: SingleChildScrollView(
+        child:  Padding(
+          padding: EdgeInsets.all(16),
+          child:   Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,  //alignment
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: Image.asset('assets/images/StudioNotesLogo.png'),
+                ),
 
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,  //alignment
-          children: <Widget>[
-            Container(
-              child: Image(
-                  height: 200,
-                  width: 200,
-                  image: NetworkImage('https://i.pinimg.com/originals/53/cb/23/53cb231f4c04ae30a04a6e292eb2a48c.jpg')
-              ),
-            ),
+                Container(  //maximum space you can use
+                    margin: EdgeInsets.symmetric(horizontal: 50),
+                    child:  TextFormField(
+                        controller: usernameController,
+                        obscureText: false,
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                        )
+                    )),
 
-            Container(  //maximum space you can use
-              margin: EdgeInsets.symmetric(horizontal: 50),
-              child:  TextFormField(
-                controller: usernameController,
-                obscureText: false,
-                decoration: InputDecoration(
-                  hintText: 'Email',
-                )
-            )),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  child:  TextFormField(
+                      controller: passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'Password',
+                      )
+                  ),
+                ),
 
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 50),
-              child:  TextFormField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'Password',
-                  )
-              ),
-            ),
-
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width /3,
-              margin: EdgeInsets.only(top: 5),
-              child:  ElevatedButton(
-                  onPressed: (){
-                    FirebaseAuth.instance.signInWithEmailAndPassword(
-                        email: usernameController.text, password: passwordController.text)
-                        .then((value) {
+                Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width /3,
+                  margin: EdgeInsets.only(top: 5),
+                  child:  ElevatedButton(
+                      onPressed: (){
+                        FirebaseAuth.instance.signInWithEmailAndPassword(
+                            email: usernameController.text, password: passwordController.text)
+                            .then((value) {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) => HomeScreen())
                           ).catchError((error) {
                             print("Failed to login");
                             print(error.toString());
                           });
-                    });
-                  },
-                  child: Text("Login")
-              ),
-            ),
+                        });
+                      },
+                      child: Text("Login")
+                  ),
+                ),
 
-            Container(
-              height: 40,
-              width: MediaQuery.of(context).size.width /3,
-              margin: EdgeInsets.only(top: 5),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SignUpScreen())
-                    );
-                  },
-                  child: Text("Signup")
-              ),
-            ),
+                Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width /3,
+                  margin: EdgeInsets.only(top: 5),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => SignUpScreen())
+                        );
+                      },
+                      child: Text("Signup")
+                  ),
+                ),
 
-          ],
+              ],
+            ),
+          ),
         ),
       ),
-
     );
   }
 }
