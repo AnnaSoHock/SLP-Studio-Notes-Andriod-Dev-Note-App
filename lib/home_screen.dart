@@ -14,10 +14,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 Future<void> getData() async {
+  final currUser = FirebaseAuth.instance.currentUser?.uid;
   final ref = FirebaseDatabase.instance.ref();
-  final snapshot = await ref.child('users/Xy74Mv1bAmSnZ4bunKLoMPCEpPc2').get();
+  final snapshot = await ref.child('users/$currUser').get();
   if (snapshot.exists) {
+    print("Current user's data");
     print(snapshot.value);
+
   } else {
     print('No data available.');
   }
@@ -64,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
             //
             // ),
             FutureBuilder(
+                future: getData(),
                 builder: (context, snapshot) {
                     if(snapshot.connectionState == ConnectionState.waiting){
                       return Center(
