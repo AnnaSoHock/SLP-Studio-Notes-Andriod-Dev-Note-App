@@ -82,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
                             .then((authResult) {
                               print("Created new account UID" + authResult.user!.uid.toString());
 
-
+                              //create user profile in real-time database
                               var userProfile = {
                                 'uid' : authResult.user!.uid,
                                 'email' : emailController.text,

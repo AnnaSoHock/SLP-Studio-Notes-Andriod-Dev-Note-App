@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'note_card.dart';
 import 'dart:async';
-
 import 'main.dart';
 
 
@@ -13,7 +13,15 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-
+Future<void> getData() async {
+  final ref = FirebaseDatabase.instance.ref();
+  final snapshot = await ref.child('users/Xy74Mv1bAmSnZ4bunKLoMPCEpPc2').get();
+  if (snapshot.exists) {
+    print(snapshot.value);
+  } else {
+    print('No data available.');
+  }
+}
 class _HomeScreenState extends State<HomeScreen> {  //home screen actions
   @override
   Widget build(BuildContext context) {  //entire UI
@@ -38,41 +46,60 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
                 )
               ],
             ),
-            Card(
-              child: ListTile(
-                title: Text('Create new Note'),
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => AddNote()));
-                },
-               StreamBuilder<QuerySnapshot>(
-                 stream: FirebaseFirestore.instance.collection("Notes").snapshots(),
-                 builder: (context, AsyncSnapshot snapshot){
-                   if(snapshot.connectionState == ConnectionState.waiting){
-                     return Center(
-                       child: CircularNotchedRectangle(),
-                     );
-                   }
-                   if(snapshot.hasData)
-                     {
-                       return GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2));
-                     }
-                   return Text("There are no Notes", style: GoogleFonts.nunito(color: Colors.black ),);
-                 },
 
-               )
-              ),
+            // StreamBuilder<QuerySnapshot>(
+            //   stream: FirebaseFirestore.instance.collection("Notes").snapshots(),
+            //   builder: (context, AsyncSnapshot snapshot){
+            //     if(snapshot.connectionState == ConnectionState.waiting){
+            //       return Center(
+            //         child: CircularProgressIndicator(),
+            //       );
+            //     }
+            //     if(snapshot.hasData)
+            //     {
+            //       return GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2));
+            //     }
+            //     return Text("There are no Notes", style: GoogleFonts.nunito(color: Colors.black ),);
+            //   },
+            //
+            // ),
+            FutureBuilder(
+                builder: (context, snapshot) {
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if(snapshot.hasData)
+                    {
+                      return GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2));
+                    }
+                    return Text("There are no Notes", style: GoogleFonts.nunito(color: Colors.black ),);
+                },
             ),
-            Card(
-              child: ListTile(
-                leading: FlutterLogo(size: 72.0),
-                title: Text('Three-line ListTile'),
-                subtitle: Text(
-                    'A sufficiently long subtitle warrants three lines.'
-                ),
-                trailing: Icon(Icons.more_vert),
-                isThreeLine: true,
-              ),
-            ),
+
+
+
+    //
+            // Card(
+            //   child: ListTile(
+            //     title: Text('Create new Note'),
+            //     onTap: () {
+            //       Navigator.push(context, MaterialPageRoute(builder: (context) => AddNote()));
+            //     },
+            //   ),
+            // ),
+            // Card(
+            //   child: ListTile(
+            //     leading: FlutterLogo(size: 72.0),
+            //     title: Text('Three-line ListTile'),
+            //     subtitle: Text(
+            //         'A sufficiently long subtitle warrants three lines.'
+            //     ),
+            //     trailing: Icon(Icons.more_vert),
+            //     isThreeLine: true,
+            //   ),
+            // ),
 
             ElevatedButton(
               child: Text("Logout"),
