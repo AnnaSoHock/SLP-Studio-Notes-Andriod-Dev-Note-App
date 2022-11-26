@@ -13,14 +13,18 @@ class HomeScreen extends StatefulWidget {
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
-Future<void> getData() async {
+
+//Get current users note book data
+Future<Object?> getNoteBookData() async {
   final currUser = FirebaseAuth.instance.currentUser?.uid;
   final ref = FirebaseDatabase.instance.ref();
-  final snapshot = await ref.child('users/$currUser').get();
+  final snapshot = await ref.child('users/$currUser/notebook').get();
+
   if (snapshot.exists) {
     print("Current user's data");
     print(snapshot.value);
 
+    return currUser;
   } else {
     print('No data available.');
   }
@@ -67,8 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
             //
             // ),
             FutureBuilder(
-                future: getData(),
-                builder: (context, snapshot) {
+                future: getNoteBookData(),
+                builder: (context, AsyncSnapshot snapshot) {
                     if(snapshot.connectionState == ConnectionState.waiting){
                       return Center(
                         child: CircularProgressIndicator(),
@@ -76,7 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
                     }
                     if(snapshot.hasData)
                     {
-                      return GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2));
+                      final data = snapshot.data as String;
+                      print("Sucessfully obtained user data");
+                      return Text("$data", style: GoogleFonts.nunito(color: Colors.black ),);
                     }
                     return Text("There are no Notes", style: GoogleFonts.nunito(color: Colors.black ),);
                 },
