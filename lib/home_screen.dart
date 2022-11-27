@@ -50,7 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text("Your recent Notes", style: GoogleFonts.roboto(color:Colors.black,fontWeight: FontWeight.bold, fontSize: 22,),),
-                )
+                ),
+
+
+
               ],
             ),
 
@@ -80,17 +83,25 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
                     }
                     if(snapshot.hasData)
                     {
-                      final data = snapshot.data as String;
+                      final notesData = snapshot.data as String;
                       print("Sucessfully obtained user data");
-                      return Text("$data", style: GoogleFonts.nunito(color: Colors.black ),);
+                      return Text("$notesData", style: GoogleFonts.nunito(color: Colors.black ),);
                     }
                     return Text("There are no Notes", style: GoogleFonts.nunito(color: Colors.black ),);
                 },
             ),
 
+            ElevatedButton(
+              child: Text("Create New Notes"),
+              onPressed: () {
 
 
-    //
+              },
+            ),
+
+
+
+
             // Card(
             //   child: ListTile(
             //     title: Text('Create new Note'),

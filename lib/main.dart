@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_projects/app_style.dart';
 import 'sign_up_screen.dart';
 import 'home_screen.dart';
 
