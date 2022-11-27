@@ -39,7 +39,13 @@ Future<Object?> getNoteBookData() async {
   //print(s);
 
 }
-
+class Notes{
+  var title;
+  var date;
+  var content;
+  var color;
+  Notes(this.title, this.date, this.color, this.content);
+}
 void createNotes(){
   String datetime = DateTime.now().toString();
   var notesProfile = {
@@ -51,11 +57,21 @@ void createNotes(){
 
   final currUser = FirebaseAuth.instance.currentUser?.uid;
   //Create user profile in firestore database
-  CollectionReference userNotes = FirebaseFirestore.instance.collection('users_notes');
-  userNotes.doc(currUser)
-      .set(notesProfile)
-      .then((value) => print("User notes added in fire store data base"))
-      .catchError((error) => print("Failed to add user notes: $error"));
+  // CollectionReference userNotes = FirebaseFirestore.instance.collection('users_notes');
+  // userNotes.doc(currUser)
+  //     .set(notesProfile)
+  //     .then((value) => print("User notes added in fire store data base"))
+  //     .catchError((error) => print("Failed to add user notes: $error"));
+  FirebaseFirestore.instance.collection('users_notes').add({
+    'note_title' : "Untitled",
+    'creation_date' : datetime,
+    'note_content' : " ",
+    'color_id' :6,
+  }).then((value) {
+    print(value.id);
+  }).catchError((onError)=>
+    print("Falied to add new note due to $onError")
+  );
 
 }
 class _HomeScreenState extends State<HomeScreen> {  //home screen actions
