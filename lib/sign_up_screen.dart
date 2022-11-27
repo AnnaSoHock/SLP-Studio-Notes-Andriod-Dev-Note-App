@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -89,6 +90,15 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
                                 'username' : usernameController.text,
                               };
 
+                              String datetime = DateTime.now().toString();
+                              var notesProfile = {
+                                'note_title' : "Untitled",
+                                'creation_date' : datetime,
+                                'note_content' : " ",
+                                'color_id' :6,
+                              };
+
+                              //Create user profile in real-time db
                               FirebaseDatabase.instance.ref().child("users/" + authResult.user!.uid)
                               .set(userProfile)
                               .then((value) {
@@ -96,6 +106,16 @@ class _SignUpScreenState extends State<SignUpScreen> {  //home screen actions
                               }).catchError((onError){
                                 print("Failed to create the profile info : " + onError.toString());
                               });
+
+                              //Create notes profile in real-time db
+                              FirebaseDatabase.instance.ref().child("users/" + authResult.user!.uid + "/notes")
+                                  .set(notesProfile)
+                                  .then((value) {
+                                print("Successfully created the notes profile info");
+                              }).catchError((onError){
+                                print("Failed to create the notes profile info : " + onError.toString());
+                              });
+
 
                           //Push info to next screen to allow user to sign up
                           Navigator.push(context,
