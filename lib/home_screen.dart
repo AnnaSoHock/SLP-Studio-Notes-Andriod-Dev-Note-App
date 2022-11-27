@@ -117,7 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                     children: snapshot.data!.docs.map((note)=> noteCard(() => {}, note))
                         .toList(),
-
                   );
                   return Text("Notes", style: GoogleFonts.nunito(color: Colors.black ),);
                 }
