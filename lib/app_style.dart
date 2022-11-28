@@ -5,7 +5,7 @@ class AppStyle{
   // static Color mainColor = Color(0xFF000633);
   // static Color accentColor = Color(0xFF0065FF);
   // static Color bgColor = Color(0xFFe2e2ff);
-
+  static var accentColor;
   //Cards have different colors
   static List<Color> cardsColor = [
     Colors.white,
@@ -16,6 +16,7 @@ class AppStyle{
     Colors.green.shade100,
     Colors.blue.shade100,
     Colors.blueGrey.shade100,
+
 
   ];
 

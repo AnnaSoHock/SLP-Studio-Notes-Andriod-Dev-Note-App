@@ -7,6 +7,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'note_card.dart';
 import 'dart:async';
 import 'main.dart';
+import 'note_editor.dart';
+import 'note_reader.dart';
 
 
 class HomeScreen extends StatefulWidget {
@@ -62,7 +64,7 @@ void createNotes(){
   //     .set(notesProfile)
   //     .then((value) => print("User notes added in fire store data base"))
   //     .catchError((error) => print("Failed to add user notes: $error"));
-  FirebaseFirestore.instance.collection('users_notes').add({
+  FirebaseFirestore.instance.collection('currUser'.toString()).add({
     'note_title' : "Untitled",
     'creation_date' : datetime,
     'note_content' : " ",
@@ -115,7 +117,9 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
                   print(snapshot.data!.docs.toList());
                   return GridView(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                    children: snapshot.data!.docs.map((note)=> noteCard(() => {}, note))
+                    children: snapshot.data!.docs.map((note)=> noteCard(() => {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => NoteReaderScreen(note),))
+                    }, note))
                         .toList(),
                   );
                   return Text("Notes", style: GoogleFonts.nunito(color: Colors.black ),);
@@ -156,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {  //home screen actions
           ElevatedButton(
             child: Text("Create New Notes"),
             onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => NoteEditorScreen()));
               createNotes();
             },
           ),
