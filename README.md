@@ -1,16 +1,9 @@
-# flutter_projects
+# Studio Notes - Android App Development
 
-A new Flutter project.
+This App was a project submission for Cal Poly Pomona's sheCodes club. I participated in the Semester Long Project program. This app allows a user to create an account as well as create, edit and delete notes; Developed using Android Studio, Flutter, and Firebase
 
-## Getting Started
+<img width="148" alt="image" src="https://github.com/AnnaSoHock/SLP-Studio-Notes-Andriod-Dev-Note-App/assets/81744048/5d21d6ba-7365-4c89-9d60-4715fad0f042">
 
-This project is a starting point for a Flutter application.
+**Youtube Link for Project Demo:** https://www.youtube.com/watch?v=_OXSIr-Lf64
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+**Developers:** Ceiara Madrigal, Anna Hock
